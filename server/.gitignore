@@ -1,0 +1,67 @@
+# =========================================
+# Node + Express 기본 .gitignore
+# =========================================
+
+# Node modules
+node_modules/
+
+# 환경 변수 파일
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# 로그 파일
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# 운영 중 생성될 수 있는 임시 파일
+tmp/
+temp/
+*.tmp
+
+# OS 필수 무시 파일
+.DS_Store
+Thumbs.db
+
+# 빌드 출력물
+dist/
+build/
+
+# TypeScript 생성물
+*.tsbuildinfo
+
+# IDE / 에디터 설정
+.vscode/
+.idea/
+*.swp
+
+# 잠금파일 (선택)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Jest / Test 관련
+coverage/
+
+# ESlint 캐시
+.eslintcache
+
+# PM2 logs
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Prisma (있다면)
+prisma/*.db
+prisma/**/*.db-journal
+
+# Optional: uploads (파일 업로드 폴더)
+uploads/
+public/uploads/
