@@ -10,6 +10,7 @@ import { authRouter } from "./routes/auth.route.js";
 import { relationRouter } from "./routes/relation.route.js";
 import { authCheckMiddleware } from "./middleware/auth.middleware.js";
 import { userRouter } from "./routes/user.route.js";
+import { feedRouter } from "./routes/feed.route.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(morgan("tiny"));
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/relation", authCheckMiddleware, relationRouter);
+app.use("/feed", feedRouter);
 
 // 404 핸들러
 app.use((req, res) => {
@@ -45,5 +47,5 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
 await runMongo();
 
 ioServer.listen(PORT || 8000, () => {
-  console.log(`server is listening on ${PORT || 8000}`);
+  console.log(`server is listening on ${PORT || 8000}!`);
 });

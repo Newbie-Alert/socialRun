@@ -1,5 +1,6 @@
 import useRealtimeLine from "@/hooks/useUpdatePolyline";
 import useUserLocation from "@/hooks/useUserLocation";
+import { router } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import { Pressable, Text, View } from "react-native";
 import MapView, { Polyline, Region } from "react-native-maps";
@@ -30,6 +31,9 @@ export default function Index() {
 
   return (
     <View style={{ flex: 1 }}>
+      <Pressable onPress={() => router.push("/pages/feature")}>
+        <Text>실험실</Text>
+      </Pressable>
       <MapView
         ref={mapRef}
         initialRegion={initRegion}
