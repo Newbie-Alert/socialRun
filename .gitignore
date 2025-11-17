@@ -1,0 +1,40 @@
+# Expo & Metro
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# Expo Dev Client build outputs
+build/
+android/app/build/
+ios/build/
+
+# React Native
+node_modules/
+npm-debug.*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# macOS
+.DS_Store
+
+# Android
+*.keystore
+*.jks
+android/.gradle/
+android/app/src/main/assets/
+android/app/src/main/res/drawable-*
+android/app/src/main/res/raw/
+
+# iOS
+ios/Pods/
+ios/build/
+ios/ExpoPlist.*
+*.xcworkspace
+xcuserdata/
+DerivedData/
+
+# Env
+.env
+.env.*
