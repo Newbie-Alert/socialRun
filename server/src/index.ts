@@ -10,6 +10,7 @@ import { authRouter } from "./routes/auth.route.js";
 import { relationRouter } from "./routes/relation.route.js";
 import { authCheckMiddleware } from "./middleware/auth.middleware.js";
 import { userRouter } from "./routes/user.route.js";
+import { storageRouter } from "./routes/storage.route.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(morgan("tiny"));
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/relation", authCheckMiddleware, relationRouter);
+app.use("/storage", storageRouter);
 
 // 404 핸들러
 app.use((req, res) => {
