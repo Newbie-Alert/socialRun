@@ -1,8 +1,8 @@
-import useRealtimeLine from "@/hooks/useUpdatePolyline";
+import GradientPlayBox from "@/components/main/GradientPlayBox";
+import useRunning from "@/hooks/useRunning";
 import useUserLocation from "@/hooks/useUserLocation";
-import { router } from "expo-router";
 import React, { useEffect, useRef } from "react";
-import { Pressable, Text, View } from "react-native";
+import { View } from "react-native";
 import MapView, { Polyline, Region } from "react-native-maps";
 
 export default function Index() {
@@ -15,7 +15,15 @@ export default function Index() {
 
   const mapRef = useRef<MapView | null>(null);
   const { currentLocation } = useUserLocation();
-  const { isUpdate, handleRealtimeStart, lineCoords } = useRealtimeLine();
+  const {
+    userState,
+    handleUserState,
+    lineCoords,
+    timerRef,
+    record,
+    lastSegmentDistance,
+    totalDistance,
+  } = useRunning();
 
   useEffect(() => {
     if (currentLocation && mapRef.current) {
@@ -31,9 +39,10 @@ export default function Index() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Pressable onPress={() => router.push("/pages/feature")}>
+      {/* <Pressable onPress={() => router.push("/pages/feature")}>
         <Text>실험실</Text>
-      </Pressable>
+      </Pressable> */}
+
       <MapView
         ref={mapRef}
         initialRegion={initRegion}
@@ -41,12 +50,20 @@ export default function Index() {
         provider="google"
         style={{ flex: 1 }}>
         {lineCoords && lineCoords.length > 0 && (
-          <Polyline coordinates={lineCoords} strokeWidth={2} fillColor="blue" />
+          <Polyline
+            strokeColor="#388CFF"
+            coordinates={lineCoords}
+            strokeWidth={4}
+          />
         )}
       </MapView>
-      <Pressable onPress={handleRealtimeStart}>
-        <Text>{isUpdate ? "running" : "stop"}</Text>
-      </Pressable>
+      <GradientPlayBox
+        lastSegmentDistance={lastSegmentDistance}
+        totalDistance={totalDistance}
+        timerRef={timerRef}
+        userState={userState}
+        onPress={handleUserState}
+      />
     </View>
   );
 }
