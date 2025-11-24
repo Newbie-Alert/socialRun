@@ -1,9 +1,15 @@
+import BottomSheet, {
+  BottomSheetScrollView,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import GradientPlayBox from "@/components/main/GradientPlayBox";
 import useRunning from "@/hooks/useRunning";
 import useUserLocation from "@/hooks/useUserLocation";
-import React, { useEffect, useRef } from "react";
-import { View } from "react-native";
+import React, { useEffect, useMemo, useRef } from "react";
+import { Text, View } from "react-native";
 import MapView, { Polyline, Region } from "react-native-maps";
+import { useRecordContext } from "@/providers/RecordProvider";
+import { router } from "expo-router";
 
 export default function Index() {
   const initRegion: Region = {
@@ -13,6 +19,8 @@ export default function Index() {
     latitudeDelta: 0.01,
   };
 
+  const { handleSetRecord } = useRecordContext();
+
   const mapRef = useRef<MapView | null>(null);
   const { currentLocation } = useUserLocation();
   const {
@@ -20,9 +28,11 @@ export default function Index() {
     handleUserState,
     lineCoords,
     timerRef,
-    record,
+    paceText,
     lastSegmentDistance,
     totalDistance,
+    kcal,
+    totalRecord,
   } = useRunning();
 
   useEffect(() => {
@@ -36,6 +46,13 @@ export default function Index() {
       });
     }
   }, [currentLocation]);
+
+  useEffect(() => {
+    if (totalRecord && totalRecord.totalDistance > 0) {
+      handleSetRecord(totalRecord);
+      router.push("/pages/feed/feed-detail");
+    }
+  }, [totalRecord]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -61,6 +78,8 @@ export default function Index() {
         lastSegmentDistance={lastSegmentDistance}
         totalDistance={totalDistance}
         timerRef={timerRef}
+        paceText={paceText}
+        kcal={kcal}
         userState={userState}
         onPress={handleUserState}
       />

@@ -5,11 +5,16 @@ import StopwatchTimer, {
 
 type Props = {
   timerRef: React.RefObject<StopwatchTimerMethods | null>;
+  isHidden: boolean;
 };
 
-export default function useTimer({ timerRef }: Props) {
+export default function TimerView({ timerRef, isHidden }: Props) {
   return (
     <StopwatchTimer
+      containerStyle={{
+        // display: isHidden ? "flex" : "none",
+        opacity: isHidden ? 1 : 0,
+      }}
       ref={timerRef}
       textCharStyle={{
         textAlign: "center",

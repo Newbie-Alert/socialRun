@@ -2,13 +2,18 @@ import { View, Text } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { LatLng } from "react-native-maps";
 import { getDistance } from "@/utils/getDistance";
+import { UserState } from "./useRunning";
 
-export default function useRunningDistance(latlng?: LatLng) {
+export default function useRunningDistance(
+  userState: UserState,
+  latlng?: LatLng
+) {
   const lastCoord = useRef<LatLng | null>(null);
   const [total, setTotal] = useState(0);
   const [segment, setSegment] = useState(0); // 이번 좌표 업데이트에서 증가한 거리
 
   useEffect(() => {
+    if (userState === "stopped") return;
     if (!latlng) return;
 
     // 0,0 좌표는 무시
@@ -29,9 +34,10 @@ export default function useRunningDistance(latlng?: LatLng) {
       setTotal((prev) => prev + diff);
       lastCoord.current = latlng;
     }
-  }, [latlng]);
+  }, [latlng, userState]);
 
   return {
+    setTotal,
     totalDistance: Number((total / 1000).toFixed(2)), // km
     lastSegmentDistance: segment, // 이번 업데이트에서 더해진 m
   };

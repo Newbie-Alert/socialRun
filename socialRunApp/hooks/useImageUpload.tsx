@@ -1,7 +1,5 @@
 import * as ImagePicker from "expo-image-picker";
-
-import { View, Text } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { callAxios } from "@/lib/axios/axios";
 
 type ParsedFile = {
@@ -81,10 +79,10 @@ export default function useImageUpload() {
 
       if (res.data) {
         const { publicUrl } = res.data;
-        const makeURL = publicUrl.map((url) => {
+        const uploadedURLs = publicUrl.map((url) => {
           return `${process.env.EXPO_PUBLIC_SUPABASE_STORAGE_PREFIX}/${url}`;
         });
-        setImages(makeURL);
+        setImages(uploadedURLs);
       }
     } catch (error) {
       console.log(error);

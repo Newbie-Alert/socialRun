@@ -1,38 +1,62 @@
-import { View, Text } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { UserState } from "./useRunning";
+import { useEffect, useRef, useState } from "react";
 import { StopwatchTimerMethods } from "react-native-animated-stopwatch-timer";
+import { UserState } from "./useRunning";
 
-type Props = {
+export default function useStopwatch({
+  userState,
+  totalDistance,
+}: {
   userState: UserState;
-};
-
-export default function useStopwatch({ userState }: Props) {
+  totalDistance: number;
+}) {
   const timerRef = useRef<StopwatchTimerMethods>(null);
-  const [record, setRecord] = useState<number>(0);
-  const [realTime, setRealTime] = useState<Number>(0);
+
+  const [record, setRecord] = useState(0); // stopped 시점 기록
+  const [realTime, setRealTime] = useState(0); // 실시간 시간(ms)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (!timerRef.current) {
-      console.log("no timer");
-      return;
-    }
+    const timer = timerRef.current;
+    if (!timer) return;
 
     switch (userState) {
       case "running":
-        timerRef.current.play();
+        timer.play();
+
+        // 인터벌 중복 방지
+        const snap = timer.getSnapshot();
+        setRealTime(snap); // 실시간 업데이트
 
         break;
-      case "paused":
-        const pausedRecord = timerRef.current.getSnapshot();
-        setRecord(pausedRecord);
-        timerRef.current.pause();
-      // break;
-      case "stopped":
-        const record = timerRef.current.getSnapshot();
-        setRecord(record);
-    }
-  }, [userState]);
 
-  return { timerRef, record };
+      case "paused":
+        timer.pause();
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        break;
+
+      case "stopped":
+        timer.pause();
+
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+
+        const finalRecord = timer.getSnapshot();
+        setRecord(finalRecord); // 저장
+        break;
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [userState, totalDistance]);
+
+  return { timerRef, record, realTime };
 }

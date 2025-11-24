@@ -1,22 +1,28 @@
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AuthProvider from "@/providers/AuthProvider";
 import LocationProvider from "@/providers/LocationProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { Stack } from "expo-router";
-import { Pressable, Text } from "react-native";
+
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import RecordProvider from "@/providers/RecordProvider";
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <LocationProvider>
-        <ThemeProvider>
-          <SafeAreaProvider>
-            <SafeAreaView style={{ flex: 1 }}>
-              <Stack screenOptions={{ headerShown: false }} />
-            </SafeAreaView>
-          </SafeAreaProvider>
-        </ThemeProvider>
-      </LocationProvider>
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <LocationProvider>
+          <RecordProvider>
+            <ThemeProvider>
+              <SafeAreaProvider>
+                <SafeAreaView style={{ flex: 1 }}>
+                  <Stack screenOptions={{ headerShown: false }} />
+                </SafeAreaView>
+              </SafeAreaProvider>
+            </ThemeProvider>
+          </RecordProvider>
+        </LocationProvider>
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 }
