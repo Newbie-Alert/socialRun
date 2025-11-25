@@ -3,8 +3,10 @@ import mongoose, { Schema } from "mongoose";
 
 export interface IFeed extends Document {
   writerId: string;
+  title: string;
   content: string;
-  images: string[];
+  images: string[] | null;
+  recordId: string;
 }
 
 const feedSchema = new Schema<IFeed>({
@@ -12,12 +14,19 @@ const feedSchema = new Schema<IFeed>({
     type: String,
     required: true,
   },
+  title: {
+    type: String,
+  },
   content: {
     type: String,
     required: true,
   },
   images: {
     type: [String],
+    default: null,
+  },
+  recordId: {
+    type: String,
   },
 });
 

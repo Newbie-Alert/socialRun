@@ -50,7 +50,7 @@ export default function Index() {
   useEffect(() => {
     if (totalRecord && totalRecord.totalDistance > 0) {
       handleSetRecord(totalRecord);
-      router.push("/pages/feed/feed-detail");
+      router.push("/pages/feed/write-feed");
     }
   }, [totalRecord]);
 

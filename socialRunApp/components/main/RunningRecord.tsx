@@ -1,5 +1,6 @@
 import { UserState } from "@/hooks/useRunning";
 import useTheme from "@/providers/ThemeProvider";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -73,9 +74,22 @@ export default function RunningRecord({
             alignItems: "center",
             justifyContent: "center",
           }}>
-          <Text style={{ textAlign: "center" }}>
-            {userState === "paused" ? "Resume" : "Pause"}
-          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
+            }}>
+            <Ionicons
+              name={userState === "paused" ? "play" : "pause"}
+              size={21}
+              color={"black"}
+            />
+            <Text style={{ fontWeight: 600, fontSize: 21, color: "black" }}>
+              {userState === "paused" ? "Resume" : "Pause"}
+            </Text>
+          </View>
         </Pressable>
         <Pressable
           onPress={() => onPress("stopped")}
@@ -83,11 +97,22 @@ export default function RunningRecord({
             width: "48%",
             backgroundColor: "white",
             borderRadius: 6,
-            height: "100%",
+            height: 48,
             alignItems: "center",
             justifyContent: "center",
           }}>
-          <Text>Stop</Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
+            }}>
+            <Ionicons name="stop" size={21} color={"black"} />
+            <Text style={{ fontWeight: 600, fontSize: 21, color: "black" }}>
+              Stop
+            </Text>
+          </View>
         </Pressable>
       </View>
     </View>

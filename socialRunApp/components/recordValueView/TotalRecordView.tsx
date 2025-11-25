@@ -4,7 +4,7 @@ import { TotalRecord } from "@/hooks/useRunning";
 import { FontAwesome5, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import { getTimeFromMilliseconds } from "@/utils/time";
 
-type PickedValueType = "calories" | "timeRecord" | "totalDistance";
+type PickedValueType = "calories" | "timeRecord" | "totalDistance" | "pace";
 
 type Props = Pick<TotalRecord, PickedValueType>;
 
@@ -40,35 +40,39 @@ export default function TotalRecordView(props: Props) {
         title: "Time",
       };
     }
+    if (value === "pace") {
+      return {
+        bg: "hsl(269, 100%, 96%)",
+        icon: "tachometer-alt",
+        iconColor: "hsl(271, 82%, 56%)",
+        title: "Pace",
+      };
+    }
   };
 
   return (
     <View style={styles.container}>
       {Object.entries(props).map(([key, value]) => {
         const paramKey = key as PickedValueType;
+        const styleInfo = extractStyleByKey(paramKey);
 
         return (
           <View
             key={key}
-            style={[
-              styles.valueBox,
-              { backgroundColor: extractStyleByKey(paramKey)?.bg },
-            ]}>
+            style={[styles.valueBox, { backgroundColor: styleInfo?.bg }]}>
             <View>
               <FontAwesome5
-                name={extractStyleByKey(paramKey)?.icon}
+                name={styleInfo?.icon}
                 size={24}
-                color={extractStyleByKey(paramKey)?.iconColor}
+                color={styleInfo?.iconColor}
               />
             </View>
             <Text style={styles.valueText}>
               {paramKey === "timeRecord"
-                ? getTimeFromMilliseconds(value)
+                ? getTimeFromMilliseconds(value as number)
                 : value}
             </Text>
-            <Text style={styles.titleText}>
-              {extractStyleByKey(paramKey)?.title}
-            </Text>
+            <Text style={styles.titleText}>{styleInfo?.title}</Text>
           </View>
         );
       })}
@@ -80,12 +84,14 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 8,
+    gap: 12,
   },
   valueBox: {
-    flex: 1,
+    elevation: 1,
+    width: "48%",
     gap: 4,
     borderRadius: 6,
     padding: 12,

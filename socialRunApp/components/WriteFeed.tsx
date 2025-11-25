@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { TotalRecord } from "@/hooks/useRunning";
-import TotalRecordView from "./modules/TotalRecordView";
+import TotalRecordView from "./recordValueView/TotalRecordView";
 import MapView, { Polyline } from "react-native-maps";
 
 type Props = TotalRecord;

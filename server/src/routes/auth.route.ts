@@ -82,9 +82,13 @@ authRouter.post(
         return;
       }
 
-      const token = jwt.sign({ email }, process.env.JWT_SECRET!, {
-        expiresIn: "1d",
-      });
+      const token = jwt.sign(
+        { email, userId: isExistsUser._id },
+        process.env.JWT_SECRET!,
+        {
+          expiresIn: "1d",
+        }
+      );
 
       return res.status(200).send({
         token,

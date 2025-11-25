@@ -31,7 +31,7 @@ app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/relation", authCheckMiddleware, relationRouter);
 app.use("/storage", storageRouter);
-app.use("/feed", feedRouter);
+app.use("/feed", authCheckMiddleware, feedRouter);
 
 // 404 핸들러
 app.use((req, res) => {

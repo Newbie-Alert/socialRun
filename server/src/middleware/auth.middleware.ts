@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { NextFunction, Request, Response } from "express";
+import type { LoginTokenType } from "../types/auth/auth.type.js";
 
 export const authCheckMiddleware = async (
   req: Request,
@@ -18,10 +19,14 @@ export const authCheckMiddleware = async (
     const token = authorization.split(" ")[1];
 
     const decoded = jwt.verify(token!, process.env.JWT_SECRET!);
+    const userId = (decoded as LoginTokenType).userId;
 
     if (!decoded) {
       throw Error("유효하지 않은 토큰입니다");
     }
+
+    (req as any).userId = userId;
+
     next();
   } catch (error) {
     next(error);
