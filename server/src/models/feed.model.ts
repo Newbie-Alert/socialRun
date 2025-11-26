@@ -3,6 +3,7 @@ import mongoose, { Schema } from "mongoose";
 
 export interface IFeed extends Document {
   writerId: string;
+  writerName: string;
   title: string;
   content: string;
   images: string[] | null;
@@ -13,6 +14,9 @@ const feedSchema = new Schema<IFeed>({
   writerId: {
     type: String,
     required: true,
+  },
+  writerName: {
+    type: String,
   },
   title: {
     type: String,

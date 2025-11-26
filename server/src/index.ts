@@ -12,6 +12,7 @@ import { authCheckMiddleware } from "./middleware/auth.middleware.js";
 import { userRouter } from "./routes/user.route.js";
 import { storageRouter } from "./routes/storage.route.js";
 import { feedRouter } from "./routes/feed.route.js";
+import { recordRouter } from "./routes/record.route.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/relation", authCheckMiddleware, relationRouter);
 app.use("/storage", storageRouter);
+app.use("/record", authCheckMiddleware, recordRouter);
 app.use("/feed", authCheckMiddleware, feedRouter);
 
 // 404 핸들러

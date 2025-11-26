@@ -10,13 +10,15 @@ import {
 } from "react-native";
 import React, { use, useEffect, useMemo, useRef, useState } from "react";
 import { useRecordContext } from "@/providers/RecordProvider";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import TotalRecordView from "@/components/recordValueView/TotalRecordView";
 import { Ionicons } from "@expo/vector-icons";
 import useImageUpload from "@/hooks/useImageUpload";
-import { TotalRecord } from "@/hooks/useRunning";
-import { UploadBodyType, uploadFeed } from "@/api/feed/feed.api";
+import { uploadFeed } from "@/api/feed/feed.api";
+import { saveRecord } from "@/api/auth/record/record.api";
+import { useAuth } from "@/providers/AuthProvider";
+import { UploadBodyType } from "@/api/feed/type";
 
 export default function FeedDetail() {
   const { height } = Dimensions.get("window");
@@ -44,8 +46,26 @@ export default function FeedDetail() {
   }
 
   const handleUpload = async () => {
+    try {
+      const res = await uploadFeed(feedInfo);
+      if (res === 201) {
+        router.replace("/(tabs)");
+      }
+    } catch (error) {
+      console.log(error);
+    }
     // console.log(JSON.stringify(feedInfo, null, 2));
-    await uploadFeed(feedInfo);
+  };
+
+  const handleSaveRecord = async () => {
+    try {
+      const res = await saveRecord(record);
+      if (res === 201) {
+        router.replace("/(tabs)");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -148,7 +168,8 @@ export default function FeedDetail() {
       </ScrollView>
       <View style={styles.bottomBox}>
         <TouchableOpacity
-          style={[{ backgroundColor: "#15a349" }, styles.bottomButton]}>
+          style={[{ backgroundColor: "#15a349" }, styles.bottomButton]}
+          onPress={handleSaveRecord}>
           <Text style={styles.buttonText}>Save only Record</Text>
         </TouchableOpacity>
         <TouchableOpacity

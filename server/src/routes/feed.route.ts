@@ -8,6 +8,8 @@ import type { TotalRecord } from "../types/record/record.type.js";
 import mongoose from "mongoose";
 import recordCoordModel from "../models/recordCoord.model.js";
 import recordModel from "../models/record.model.js";
+import Users from "../models/users.model.js";
+
 export const feedRouter = express.Router();
 
 type UploadBodyType = {
@@ -17,8 +19,20 @@ type UploadBodyType = {
   totalRecord: TotalRecord;
 };
 
+feedRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  const { userName } = req.query;
+  try {
+    const getFeedRes = userName
+      ? await feedModel.find({ writerName: userName })
+      : await feedModel.find({});
+    res.status(200).send(getFeedRes);
+  } catch (error) {
+    next(error);
+  }
+});
+
 feedRouter.post(
-  "/upload",
+  "/",
   async (
     req: Request<{}, {}, UploadBodyType>,
     res: Response,
@@ -70,11 +84,14 @@ feedRouter.post(
         throw new Error("recordCoord create Failed");
       }
 
+      const user = await Users.findById(userId).select("nickname -_id");
+
       // 피드 생성
       const feedCreateRes = await feedModel.create(
         [
           {
             writerId: userId,
+            writerName: user?.nickname,
             title,
             content,
             images,
